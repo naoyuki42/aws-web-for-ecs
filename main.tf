@@ -18,4 +18,5 @@ provider "aws" {
 # ネットワークの設定
 module "network" {
   source = "./modules/network"
+  env    = var.env
 }

@@ -5,12 +5,10 @@ variable "region" {
 
 # プロジェクト名
 variable "project" {
-  default     = "Example"
-  description = "project name"
+  default = "Test-Project"
 }
 
 # 環境名
 variable "env" {
-  default     = "TEST"
-  description = "environment name"
+  default = "TEST"
 }
