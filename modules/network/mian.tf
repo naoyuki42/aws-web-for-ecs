@@ -168,11 +168,10 @@ resource "aws_route_table" "private" {
 
 # ロードバランサー
 resource "aws_lb" "alb" {
-  name                       = "${var.env}-alb"
-  load_balancer_type         = "application"
-  internal                   = false
-  idle_timeout               = 60
-  enable_deletion_protection = false
+  name               = "${var.env}-alb"
+  load_balancer_type = "application"
+  internal           = false
+  idle_timeout       = 60
 
   subnets = [
     aws_subnet.public_01.id,
@@ -223,7 +222,7 @@ module "http_redirect_sg" {
 # HTTPのリスナー
 resource "aws_lb_listener" "http_listner" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = 8080
+  port              = 80
   protocol          = "HTTP"
 
   default_action {
