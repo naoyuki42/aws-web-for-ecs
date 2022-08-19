@@ -19,4 +19,5 @@ provider "aws" {
 module "network" {
   source = "./modules/network"
   env    = var.env
+  domain = var.domain
 }

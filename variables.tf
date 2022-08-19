@@ -12,3 +12,8 @@ variable "project" {
 variable "env" {
   default = "TEST"
 }
+
+# 取得ドメイン名
+variable "domain" {
+  default = "nao42.com"
+}
