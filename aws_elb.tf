@@ -33,12 +33,12 @@ module "https_sg" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
-# HTTPのリスナー
+# HTTPSのリスナー
 resource "aws_lb_listener" "https_listner" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 443
   protocol          = "HTTPS"
-  certificate_arn   = aws_acm_certificate.acm.arn
+  certificate_arn   = aws_acm_certificate.acm_for_alb.arn
   ssl_policy        = "ELBSecurityPolicy-2016-08"
 
   default_action {
@@ -55,12 +55,6 @@ resource "aws_lb_listener" "https_listner" {
     aws_acm_certificate_validation.certificate_valdattion_for_alb
   ]
 }
-
-# CloudFrontからの接続のみを許可
-# TODO:一旦固定値を返す
-# resource "aws_lb_listener_rule" "cloudfront_only" {
-
-# }
 
 # # ターゲットグループ
 # resource "aws_lb_target_group" "target_group" {

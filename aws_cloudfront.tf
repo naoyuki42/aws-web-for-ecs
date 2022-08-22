@@ -1,8 +1,12 @@
 # ALB用CloudFront
 resource "aws_cloudfront_distribution" "cf_for_alb" {
   enabled = true
+  aliases = [
+    "api.${data.aws_route53_zone.domain.name}"
+  ]
+
   origin {
-    domain_name = aws_route53_record.alb.name
+    domain_name = aws_route53_record.record_for_alb.name
     origin_id   = aws_lb.alb.id
 
     custom_origin_config {
@@ -46,11 +50,7 @@ resource "aws_cloudfront_distribution" "cf_for_alb" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
-    acm_certificate_arn            = aws_acm_certificate.acm.arn
+    acm_certificate_arn            = aws_acm_certificate.acm_for_cf.arn
     ssl_support_method             = "sni-only"
   }
-
-  depends_on = [
-    aws_lb.alb
-  ]
 }
