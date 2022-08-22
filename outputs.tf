@@ -1,3 +1,3 @@
 output "domain_name" {
-  value = module.network.domain_name
+  value = aws_route53_record.alb.name
 }
