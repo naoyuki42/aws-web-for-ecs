@@ -11,9 +11,7 @@ resource "aws_lb" "alb" {
   ]
 
   security_groups = [
-    module.http_sg.security_group_id,
     module.https_sg.security_group_id,
-    module.http_redirect_sg.security_group_id,
   ]
 }
 
@@ -35,33 +33,7 @@ module "https_sg" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
-# HTTPからHTTPSへのリダイレクト用セキュリティグループ
-module "http_redirect_sg" {
-  source      = "./modules/security_group"
-  name        = "http_redirect_sg"
-  vpc_id      = aws_vpc.vpc.id
-  port        = 8080
-  cidr_blocks = ["0.0.0.0/0"]
-}
-
 # HTTPのリスナー
-resource "aws_lb_listener" "http_listner" {
-  load_balancer_arn = aws_lb.alb.arn
-  port              = 80
-  protocol          = "HTTP"
-
-  default_action {
-    type = "redirect"
-
-    redirect {
-      port        = 443
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-}
-
-# HTTPSのリスナー
 resource "aws_lb_listener" "https_listner" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 443
@@ -80,6 +52,54 @@ resource "aws_lb_listener" "https_listner" {
   }
 
   depends_on = [
-    aws_acm_certificate_validation.certificate_valdattion
+    aws_acm_certificate_validation.certificate_valdattion_for_alb
   ]
 }
+
+# CloudFrontからの接続のみを許可
+# TODO:一旦固定値を返す
+# resource "aws_lb_listener_rule" "cloudfront_only" {
+
+# }
+
+# # ターゲットグループ
+# resource "aws_lb_target_group" "target_group" {
+#   name                 = "target"
+#   target_type          = "ip"
+#   vpc_id               = aws_vpc.vpc.id
+#   port                 = 80
+#   protocol             = "HTTP"
+#   deregistration_delay = 300
+
+#   health_check {
+#     path                = "/"
+#     healthy_threshold   = 5
+#     unhealthy_threshold = 2
+#     timeout             = 5
+#     interval            = 30
+#     matcher             = 200
+#     port                = "traffic-port"
+#     protocol            = "HTTP"
+#   }
+
+#   depends_on = [
+#     aws_lb.alb
+#   ]
+# }
+
+# # リスナールール
+# resource "aws_lb_listener_rule" "listner_rule" {
+#   listener_arn = aws_lb_listener.http_listner.arn
+#   priority     = 100
+
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.target_group.arn
+#   }
+
+#   condition {
+#     path_pattern {
+#       values = ["/*"]
+#     }
+#   }
+# }

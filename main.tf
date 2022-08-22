@@ -12,3 +12,6 @@ provider "aws" {
 # TODO:リソースのタグ付け
 # TODO:リソースのモジュール化
 # TODO:複数環境への対応
+# TODO:Cloudfrontの導入
+# TODO:WAFの導入
+# TODO:ログの取得

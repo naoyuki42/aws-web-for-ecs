@@ -3,7 +3,7 @@ data "aws_route53_zone" "domain" {
   name = var.domain
 }
 
-# LB用DNSレコード
+# ALB用DNSレコード
 resource "aws_route53_record" "alb" {
   zone_id = data.aws_route53_zone.domain.id
   name    = data.aws_route53_zone.domain.name
