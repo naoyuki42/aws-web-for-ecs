@@ -4,10 +4,6 @@ resource "aws_subnet" "public_01" {
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "ap-northeast-1a"
   map_public_ip_on_launch = true
-
-  tags = merge({
-    Name = "${var.env}-public-subnet-01"
-  })
 }
 
 resource "aws_route_table_association" "public_01" {
@@ -21,10 +17,6 @@ resource "aws_subnet" "public_02" {
   cidr_block              = "10.0.2.0/24"
   availability_zone       = "ap-northeast-1c"
   map_public_ip_on_launch = true
-
-  tags = merge({
-    Name = "${var.env}-public-subnet-02"
-  })
 }
 
 resource "aws_route_table_association" "public_02" {
@@ -35,10 +27,6 @@ resource "aws_route_table_association" "public_02" {
 # パブリックサブネット用ルートテーブル
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
-
-  tags = merge({
-    Name = "${var.env}-public-route-table"
-  })
 }
 
 resource "aws_route" "public" {
@@ -53,10 +41,6 @@ resource "aws_subnet" "private_01" {
   cidr_block              = "10.0.65.0/24"
   availability_zone       = "ap-northeast-1a"
   map_public_ip_on_launch = false
-
-  tags = merge({
-    Name = "${var.env}-private-subnet-01"
-  })
 }
 
 resource "aws_route_table_association" "private_01" {
@@ -70,10 +54,6 @@ resource "aws_subnet" "private_02" {
   cidr_block              = "10.0.66.0/24"
   availability_zone       = "ap-northeast-1c"
   map_public_ip_on_launch = false
-
-  tags = merge({
-    Name = "${var.env}-private-subnet-02"
-  })
 }
 
 resource "aws_route_table_association" "private_02" {
@@ -84,9 +64,5 @@ resource "aws_route_table_association" "private_02" {
 # プライベートサブネット用ルートテーブル
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.vpc.id
-
-  tags = merge({
-    Name = "${var.env}-private-route-table"
-  })
 }
 

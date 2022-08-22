@@ -15,10 +15,6 @@ resource "aws_lb" "alb" {
     module.https_sg.security_group_id,
     module.http_redirect_sg.security_group_id,
   ]
-
-  tags = merge({
-    Name = "${var.env}-alb"
-  })
 }
 
 # HTTP通信用セキュリティグループ
@@ -28,7 +24,6 @@ module "http_sg" {
   vpc_id      = aws_vpc.vpc.id
   port        = 80
   cidr_blocks = ["0.0.0.0/0"]
-  env         = var.env
 }
 
 # HTTPS通信用セキュリティグループ
@@ -38,7 +33,6 @@ module "https_sg" {
   vpc_id      = aws_vpc.vpc.id
   port        = 443
   cidr_blocks = ["0.0.0.0/0"]
-  env         = var.env
 }
 
 # HTTPからHTTPSへのリダイレクト用セキュリティグループ
@@ -48,7 +42,6 @@ module "http_redirect_sg" {
   vpc_id      = aws_vpc.vpc.id
   port        = 8080
   cidr_blocks = ["0.0.0.0/0"]
-  env         = var.env
 }
 
 # HTTPのリスナー

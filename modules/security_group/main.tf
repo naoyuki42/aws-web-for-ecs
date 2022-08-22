@@ -2,10 +2,6 @@
 resource "aws_security_group" "sg" {
   name   = var.name
   vpc_id = var.vpc_id
-
-  tags = merge({
-    Name = "${var.env}-security-group-for-${var.name}"
-  })
 }
 
 # インバウンドルール

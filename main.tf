@@ -7,11 +7,8 @@ terraform {
 provider "aws" {
   version = "3.37.0"
   region  = var.region
-  # TODO:タグが付いていないリソースあり
-  default_tags {
-    tags = {
-      Project     = var.project
-      Environment = var.env
-    }
-  }
 }
+
+# TODO:リソースのタグ付け
+# TODO:リソースのモジュール化
+# TODO:複数環境への対応
