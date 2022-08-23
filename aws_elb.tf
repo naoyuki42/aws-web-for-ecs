@@ -61,11 +61,12 @@ resource "aws_lb_listener_rule" "from_cf" {
   listener_arn = aws_lb_listener.https_listner.arn
   priority     = 100
 
-  # TODO:カスタムヘッダーを変数で定義したい
   condition {
     http_header {
-      http_header_name = "x-custom-header"
-      values           = ["naoyuki42"]
+      http_header_name = "${var.header_key}"
+      values = [
+        "${var.header_value}"
+      ]
     }
   }
 

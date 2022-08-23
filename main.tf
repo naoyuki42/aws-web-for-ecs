@@ -15,3 +15,4 @@ provider "aws" {
 # TODO:Cloudfrontの導入
 # TODO:WAFの導入
 # TODO:ログの取得
+# TODO:変数などにdescriptionの追加

@@ -20,10 +20,9 @@ resource "aws_cloudfront_distribution" "cf_for_alb" {
       ]
     }
 
-    # TODO:カスタムヘッダーを変数で定義したい
     custom_header {
-      name  = "x-custom-header"
-      value = "naoyuki42"
+      name  = "${var.header_key}"
+      value = "${var.header_value}"
     }
   }
 
@@ -53,4 +52,8 @@ resource "aws_cloudfront_distribution" "cf_for_alb" {
     acm_certificate_arn            = aws_acm_certificate.acm_for_cf.arn
     ssl_support_method             = "sni-only"
   }
+
+  depends_on = [
+    aws_lb.alb
+  ]
 }
