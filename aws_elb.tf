@@ -45,9 +45,9 @@ resource "aws_lb_listener" "https_listner" {
     type = "fixed-response"
 
     fixed_response {
-      content_type = "text/plain"
-      message_body = "Not Found"
-      status_code  = 404
+      content_type = "application/json"
+      message_body = "{'message':'Bad Gateway'}"
+      status_code  = 502
     }
   }
 
@@ -69,17 +69,6 @@ resource "aws_lb_listener_rule" "from_cf" {
       ]
     }
   }
-
-  # TODO:ECSのデプロイまで固定値を返却する
-  # action {
-  #   type = "fixed-response"
-
-  #   fixed_response {
-  #     content_type = "text/plain"
-  #     message_body = "カスタムヘッダーが正常に付いていました。"
-  #     status_code  = 200
-  #   }
-  # }
 
   action {
     type             = "forward"

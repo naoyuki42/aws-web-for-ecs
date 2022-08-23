@@ -48,7 +48,7 @@ resource "aws_ecs_service" "service" {
   }
 }
 
-# セキュリティグループ
+# ECS用セキュリティグループ
 module "ecs_sg" {
   source = "./modules/security_group"
   name   = "ecs-sg"
