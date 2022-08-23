@@ -20,9 +20,9 @@ resource "aws_cloudfront_distribution" "cf_for_alb" {
       ]
     }
 
-    # TODO:カスタムヘッダーを変数で指定したい
+    # TODO:カスタムヘッダーを変数で定義したい
     custom_header {
-      name  = "x-origin-header"
+      name  = "x-custom-header"
       value = "naoyuki42"
     }
   }

@@ -46,14 +46,39 @@ resource "aws_lb_listener" "https_listner" {
 
     fixed_response {
       content_type = "text/plain"
-      message_body = "これは『HTTPS』です"
-      status_code  = 200
+      message_body = "Not Found"
+      status_code  = 404
     }
   }
 
   depends_on = [
     aws_acm_certificate_validation.certificate_valdattion_for_alb
   ]
+}
+
+# CloudFront用リスナールール
+resource "aws_lb_listener_rule" "from_cf" {
+  listener_arn = aws_lb_listener.https_listner.arn
+  priority     = 100
+
+  # TODO:カスタムヘッダーを変数で定義したい
+  condition {
+    http_header {
+      http_header_name = "x-custom-header"
+      values           = ["naoyuki42"]
+    }
+  }
+
+  # TODO:ECSのデプロイまで固定値を返却する
+  action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "カスタムヘッダーが正常に付いていました。"
+      status_code  = 200
+    }
+  }
 }
 
 # # ターゲットグループ
