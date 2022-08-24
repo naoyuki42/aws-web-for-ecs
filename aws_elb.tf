@@ -15,14 +15,14 @@ resource "aws_lb" "alb" {
   ]
 }
 
-# HTTP通信用セキュリティグループ
-module "http_sg" {
-  source      = "./modules/security_group"
-  name        = "http_sg"
-  vpc_id      = aws_vpc.vpc.id
-  port        = 80
-  cidr_blocks = ["0.0.0.0/0"]
-}
+# # HTTP通信用セキュリティグループ
+# module "http_sg" {
+#   source      = "./modules/security_group"
+#   name        = "http_sg"
+#   vpc_id      = aws_vpc.vpc.id
+#   port        = 80
+#   cidr_blocks = ["0.0.0.0/0"]
+# }
 
 # HTTPS通信用セキュリティグループ
 module "https_sg" {
@@ -72,7 +72,7 @@ resource "aws_lb_listener_rule" "from_cf" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.target_group.arn
+    target_group_arn = aws_lb_target_group.api.arn
   }
 
   condition {
@@ -82,9 +82,9 @@ resource "aws_lb_listener_rule" "from_cf" {
   }
 }
 
-# ターゲットグループ
-resource "aws_lb_target_group" "target_group" {
-  name                 = "target"
+# APIサーバー用ターゲットグループ
+resource "aws_lb_target_group" "api" {
+  name                 = "${var.env}-api-target-group"
   target_type          = "ip"
   vpc_id               = aws_vpc.vpc.id
   port                 = 80

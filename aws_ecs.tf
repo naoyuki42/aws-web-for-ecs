@@ -3,21 +3,21 @@ resource "aws_ecs_cluster" "cluster" {
   name = "${var.env}-ecs-cluster"
 }
 
-# タスク定義
-resource "aws_ecs_task_definition" "task_definition" {
-  family                   = "${var.env}-tas-definision"
+# APIサーバー用タスク定義
+resource "aws_ecs_task_definition" "api" {
+  family                   = "${var.env}-api-task-definision"
   cpu                      = "256"
   memory                   = "512"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  container_definitions    = file("./container/container_definition.json")
+  container_definitions    = file("./container/api_definition.json")
 }
 
-# サービス
-resource "aws_ecs_service" "service" {
-  name                              = "sevice"
+# APIサーバー用サービス
+resource "aws_ecs_service" "api" {
+  name                              = "${var.env}-api-service"
   cluster                           = aws_ecs_cluster.cluster.arn
-  task_definition                   = aws_ecs_task_definition.task_definition.arn
+  task_definition                   = aws_ecs_task_definition.api.arn
   desired_count                     = 2
   launch_type                       = "FARGATE"
   platform_version                  = "1.3.0"
@@ -30,13 +30,13 @@ resource "aws_ecs_service" "service" {
     ]
 
     subnets = [
-      aws_subnet.public_01.id,
-      aws_subnet.public_02.id,
+      aws_subnet.private_01.id,
+      aws_subnet.private_02.id,
     ]
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.target_group.arn
+    target_group_arn = aws_lb_target_group.api.arn
     container_name   = "web"
     container_port   = 80
   }

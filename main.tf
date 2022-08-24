@@ -18,3 +18,4 @@ provider "aws" {
 # TODO:ECSのサービスを複数にしたい（APIと管理画面）
 # TODO:CI/CDパイプラインの追加
 # TODO:セッションマネージャーの導入
+# TODO:webサーバーの命名の修正（APIとADMIN）
